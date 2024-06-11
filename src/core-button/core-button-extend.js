@@ -71,19 +71,12 @@ const withInspectorControls = createHigherOrderComponent( ( BlockEdit ) => {
         }, []);
 
         useEffect(() => {
-            setCFValue();
-        }, [ CFToText_key ]);
-
-        useEffect(() => {
             if ( false === CFToText_enable ) {
-                setAttributes({
-                    text: ''
-                })
                 return;
             }
 
             setCFValue();
-        }, [ CFToText_enable ]);
+        }, [ CFToText_key, CFToText_enable ]);
 
         const setCFValue = async() => {
             const data = new FormData();
@@ -101,16 +94,11 @@ const withInspectorControls = createHigherOrderComponent( ( BlockEdit ) => {
             const responseJson = await response.json();
             
             if( false === responseJson.success ) {
-                setAttributes({
-                    text: responseJson.data
-                });
+                return;
             }
+
             setAttributes({
                 text: responseJson.data
-            });
-
-            jQuery('.cf-editor-button-disabled').each( ( index, ele ) => {
-                ele.parentElement.setAttribute('cf-disabled', 'disabled');
             });
         }
 
